@@ -1,14 +1,15 @@
-const isString = (arg: any): boolean => {
-  return typeof arg === "string";
+const isString = (arg: any): string => {
+  if (typeof arg === "string") {
+    return arg;
+  } else {
+    // throw new Error (`${arg} not a string`);
+    return;
+  }
 };
 
 const isStringArr = (arg: any[]): string[] => {
   const newArr = arg.filter((el) => {
-    if (typeof el === "string") {
-      return el;
-    } else {
-      return;
-    }
+    isString(el);
   });
   return newArr;
 };
@@ -40,16 +41,16 @@ const isStringorNumber = (arg: string | number): string | number => {
   }
 };
 
-function isCall(arg: () => void) {
-  arg();
+function isCall(arg: any): boolean {
+  if (typeof arg === "function") {
+    return true;
+  } else {
+    throw new Error(`${arg} not a function`);
+  }
 }
 
 const isFunction = (arg: any): void => {
-  if (typeof arg === "function") {
-    isCall(arg);
-  } else {
-    console.log(`${arg} is not a function`);
-  }
+  if (isCall(arg)) arg();
 };
 
 class Animal {
@@ -73,5 +74,10 @@ class Dog extends Animal {
 }
 
 function isDog(animal: any): animal is Dog {
-  return (animal !== null && typeof animal === 'object' && 'voice' in animal && animal instanceof Dog)
+  return (
+    animal !== null &&
+    typeof animal === "object" &&
+    "voice" in animal &&
+    animal instanceof Dog
+  );
 }
